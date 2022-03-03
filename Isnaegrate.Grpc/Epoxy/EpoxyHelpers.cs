@@ -1,10 +1,10 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
-using Isnaegrate.Grpc.Events;
+using System.Text;
 
-namespace Isnaegrate.Grpc;
+namespace Epoxy.Grpc;
 
-public static class CommonHelpers
+public static class EpoxyHelpers
 {
     public static IsgEvent NewIsgEvent(string source, EventType type, byte[]? payload = null)
     {
@@ -16,5 +16,18 @@ public static class CommonHelpers
             When = Timestamp.FromDateTime(DateTime.UtcNow),
             Payload = payload is null ? ByteString.Empty : ByteString.CopyFrom(payload)
         };
+    }
+
+    public static string PrettyToString(this IsgEvent value)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine(nameof(IsgEvent));
+        sb.AppendLine($"Id     : {value.Id}");
+        sb.AppendLine($"Type   : {value.Type}");
+        sb.AppendLine($"Source : {value.Source}");
+        sb.AppendLine($"When   : {value.When}");
+
+        return sb.ToString();
     }
 }

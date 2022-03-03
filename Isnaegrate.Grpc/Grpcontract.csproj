@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Nuchs</Authors>
+    <Description>Library for sharing protobuf files and associated helpers</Description>
+    <Company>Smilies</Company>
+    <Version>1.0.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.19.4" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.43.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.44.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="**\*.proto">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
+  </ItemGroup>
+
+  <ItemGroup>
+	<Protobuf Include="Epoxy\isgevent.proto" />
+	<Protobuf Include="Epoxy\reader.proto" />
+	<Protobuf Include="Epoxy\writer.proto" />
+  </ItemGroup>
+
+</Project>

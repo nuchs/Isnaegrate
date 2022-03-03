@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "Isnaegrate.Grpc.Events";
+option csharp_namespace = "Epoxy.Grpc";
 
 import "google/protobuf/timestamp.proto";
 
