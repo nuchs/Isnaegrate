@@ -1,0 +1,9 @@
+﻿@using System.Security.Cryptography.X509Certificates
+<h3>CertSummary</h3>
+
+<tr><td>@Cert.SubjectName</td><td>@Cert.NotBefore</td><td>@Cert.NotAfter</td><td>@Cert.Issuer</td></tr>
+
+@code {
+    [Parameter, EditorRequired]
+    public X509Certificate2 Cert { get; set; }
+}

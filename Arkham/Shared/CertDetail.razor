@@ -1,0 +1,25 @@
+﻿@using System.Security.Cryptography.X509Certificates
+
+<table>
+    <thead>
+        <tr>
+            <th>Field</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>SubjectName</td><td>@Cert.SubjectName</td>
+            <td>ValidFrom</td><td>@Cert.NotBefore</td>
+            <td>ValidTo</td><td>@Cert.NotAfter</td>
+            <td>SubjectName</td><td>@Cert.SerialNumber</td>
+            <td>SubjectName</td><td>@Cert.Thumbprint</td>
+            <td>SubjectName</td><td>@Cert.Version</td>
+            <td>SubjectName</td><td>@Cert.SignatureAlgorithm</td>
+            <td>IssuerName</td><td>@Cert.IssuerName</td>
+            <td>Key Usage</td><td>@GetKeyUsage()</td>
+        </tr>
+    </tbody>
+</table>
+
+

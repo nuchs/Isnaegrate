@@ -1,0 +1,39 @@
+﻿@page "/"
+@inject ICertCache Cache
+@inject IAuthority Authority
+
+<PageTitle>Certs</PageTitle>
+
+<h1>CA Certficates</h1>
+<table>
+    <thead>
+        <tr>
+            <td>Subject</td>
+            <td>From</td>
+            <td>To</td>
+            <td>Issued By</td>
+        </tr>
+    </thead>
+    <tbody>
+        <CertSummary Cert=Authority.RootCert />
+        <CertSummary Cert=Authority.IntermediateCert />
+    </tbody>
+</table>
+
+<h1>Issued Certs</h1>
+<table>
+    <thead>
+        <tr>
+            <td>Subject</td>
+            <td>From</td>
+            <td>To</td>
+            <td>Issued By</td>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var cert in Cache.GetAll())
+    {
+        <CertSummary Cert=cert />
+    }
+    </tbody>
+</table>
