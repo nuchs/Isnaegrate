@@ -6,8 +6,17 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arkham", "Arkham\Arkham.csproj", "{D4CAC35B-6AC0-41DF-AC60-9DB7C303BDA4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{494AF456-4198-4207-AB24-2903FB27DB7A}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		docker-compose.yml = docker-compose.yml
+		NuGet.config = NuGet.config
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epoxy", "Epoxy\Epoxy.csproj", "{CF220D42-15B2-4AA4-AD46-9AE41B19BD40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epoxy", "Epoxy\Epoxy.csproj", "{CF220D42-15B2-4AA4-AD46-9AE41B19BD40}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eventful", "Eventful\Eventful.csproj", "{F6B7445D-A86B-4D42-A598-3C24E1D9095C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resin", "Resin\Resin.csproj", "{8E152822-6634-4986-BC72-EA11E082285E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +32,14 @@ Global
 		{CF220D42-15B2-4AA4-AD46-9AE41B19BD40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF220D42-15B2-4AA4-AD46-9AE41B19BD40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF220D42-15B2-4AA4-AD46-9AE41B19BD40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6B7445D-A86B-4D42-A598-3C24E1D9095C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6B7445D-A86B-4D42-A598-3C24E1D9095C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6B7445D-A86B-4D42-A598-3C24E1D9095C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6B7445D-A86B-4D42-A598-3C24E1D9095C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E152822-6634-4986-BC72-EA11E082285E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E152822-6634-4986-BC72-EA11E082285E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E152822-6634-4986-BC72-EA11E082285E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E152822-6634-4986-BC72-EA11E082285E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

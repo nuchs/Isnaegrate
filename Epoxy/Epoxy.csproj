@@ -4,12 +4,16 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>a4a27fcc-a26d-499a-8f3c-439634b43a91</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	<Authors>Nuchs</Authors>
+	<Description>Eventstore Proxy</Description>
+	<Company>Smilies</Company>
+	<Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\common.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\writer.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\reader.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>
