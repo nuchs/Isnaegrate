@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option csharp_namespace = "Epoxy.Grpc";
 
-import "Epoxy/isgevent.proto"; 
+import "Protos/Epoxy/isgevent.proto"; 
 
 message ReadRequest {
 	EventType Stream = 1;
