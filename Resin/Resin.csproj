@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -18,12 +18,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Grpcontract" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\common.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\reader.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\writer.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\*.proto" AdditionalImportDirs="$(PkgGrpcontract)\Epoxy" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

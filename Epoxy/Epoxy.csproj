@@ -11,24 +11,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<Protobuf Include="Protos\*.proto"  AdditionalImportDirs="$(PkgIsnaegrate_Grpc)\protos"  />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="C:\Users\sjbro\.nuget\packages\isnaegrate.grpc\1.0.0\contentFiles\any\net6.0\Protos\common.proto" />
-    <Content Remove="C:\Users\sjbro\.nuget\packages\isnaegrate.grpc\1.0.0\contentFiles\any\net6.0\Protos\Epoxy\reader.proto" />
-    <Content Remove="C:\Users\sjbro\.nuget\packages\isnaegrate.grpc\1.0.0\contentFiles\any\net6.0\Protos\Epoxy\writer.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="EventStore.Client.Grpc.Streams" Version="22.0.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.43.0" />
-    <PackageReference Include="Isnaegrate.Grpc" Version="1.0.0" GeneratePathProperty="true" />
+    <PackageReference Include="Grpcontract" Version="1.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Protos\" />
+	  <Protobuf Include="Protos\*.proto" AdditionalImportDirs="$(PkgGrpcontract)\Epoxy" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>
