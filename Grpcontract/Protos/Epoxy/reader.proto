@@ -1,13 +1,35 @@
 syntax = "proto3";
 
-option csharp_namespace = "Epoxy.Grpc";
+package Epoxy.Grpc;
 
-import "Protos/Epoxy/isgevent.proto"; 
+import "google/protobuf/timestamp.proto";
+import "Protos/Epoxy/streams.proto"; 
+import "Protos/Epoxy/types.proto"; 
 
 message ReadRequest {
-	EventType Stream = 1;
-	int64 position = 2;
+	Streams.EventStream Stream = 1;
+	uint64 position = 2;
 }
+
+message Uid {
+	string id = 1;
+}
+
+message IsgEvent {
+  Uid Id = 1;
+  Streams.EventStream Stream = 2;
+  Types.EventType Type = 3;
+  string Source = 4;
+  uint64 position = 5;
+  google.protobuf.Timestamp When = 6;
+  bytes Payload = 7;
+}
+
+message IsgEventSet {
+	repeated IsgEvent events = 1;
+}
+
 service Reader {
-  rpc Read (ReadRequest) returns (IsgEvent);
+  rpc Read (ReadRequest) returns (IsgEventSet);
 } 
+

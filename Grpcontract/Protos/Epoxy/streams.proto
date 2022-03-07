@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package Epoxy.Grpc.Streams;
+
+enum EventStream {
+    Unknown = 0;
+    Test = 1;
+    Account = 2;
+    User = 3;
+    Content = 4;
+    Build = 5;
+}
+

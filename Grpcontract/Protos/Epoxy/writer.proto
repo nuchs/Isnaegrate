@@ -1,12 +1,25 @@
 syntax = "proto3";
 
-option csharp_namespace = "Epoxy.Grpc";
+package Epoxy.Grpc;
 
-import "Protos/Epoxy/isgevent.proto"; 
+import "Protos/Epoxy/streams.proto"; 
+import "Protos/Epoxy/types.proto"; 
 
-message WriteResponse {
+message Proposition {
+	Streams.EventStream stream = 1;
+	Types.EventType type = 2;
+	string source = 3;
+	bytes payload = 4;
+}
+
+message PropositionSet {
+	repeated Proposition proposition = 1;
+}
+
+message OpResult {
+	bool success = 1;
 }
 
 service Writer {
-  rpc Append (IsgEvent) returns (WriteResponse);
+  rpc Append (PropositionSet) returns (OpResult);
 } 
