@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<Authors>Nuchs</Authors>
-	<Description>Test harness for epoxy</Description>
+	<Description>Test harness for epoxy and resin</Description>
 	<Company>Smilies</Company>
 	<Version>1.0.0</Version>
   </PropertyGroup>

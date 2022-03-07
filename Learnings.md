@@ -18,5 +18,6 @@ So much pain...
 - Enum values must be unique per *package* (damn you c++)
 - Some funny interactions between opt_csharp_namespace and package. Namespace name inference from package is pretty good so just use that (as it allows you to make use of packages as namepsaces within the protobug files)
 - Putting contracts in nuget package makes them easy to share, fairly easy to only get the bits you need out the package
+- don't put them in the nuget package until they've stabilised, it's a pain the arse while you're iterating.
 - Namespace collisions are easy when you have lots of contracts, make liberal use of packages
 - clean rebuilds often, the protobuf compiler gets wedged frequently
