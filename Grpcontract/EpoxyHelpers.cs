@@ -1,28 +1,22 @@
 ﻿using Epoxy.Grpc.Reader;
-using Epoxy.Grpc.Streams;
-using Epoxy.Grpc.Types;
 using Epoxy.Grpc.Shared;
-using Google.Protobuf;
-using Google.Protobuf.WellKnownTypes;
+using Epoxy.Grpc.Types;
+using Epoxy.Grpc.Writer;
 using System.Text;
+using System.Text.Json;
 
 namespace Epoxy.Grpc;
 
 public static class EpoxyHelpers
 {
-    public static IsgEvent NewIsgEvent(string id, string stream, string type, string source, ulong position, DateTime when, string payload = "")
-    {
-        return new IsgEvent()
+    public static Proposition NewProposition<T>(Guid id, EventType type, string source, T payload)
+        => new Proposition()
         {
-            Id = new IsgId() { Id = id },
-            Stream = System.Enum.Parse<EventStream>(stream),
-            Type = System.Enum.Parse<EventType>(type),
-            Source = source,
-            Position = position,
-            When = Timestamp.FromDateTime(when),
-            Payload = payload
+            Id = id.ToIsgId(),
+            Type = type,
+            Source = source.Serialise(),
+            Payload = payload.Serialise()
         };
-    }
 
     public static string ToPrettyString(this IsgEvent value)
     {
@@ -30,7 +24,6 @@ public static class EpoxyHelpers
 
         sb.AppendLine(nameof(IsgEvent));
         sb.AppendLine($"\tId      : {value.Id}");
-        sb.AppendLine($"\tStream  : {value.Stream}");
         sb.AppendLine($"\tType    : {value.Type}");
         sb.AppendLine($"\tSource  : {value.Source}");
         sb.AppendLine($"\tWhen    : {value.When}");
@@ -38,4 +31,8 @@ public static class EpoxyHelpers
 
         return sb.ToString();
     }
+
+    private static IsgId ToIsgId(this Guid value) => new IsgId() { Value = value.ToString() };
+
+    private static string Serialise<T>(this T value) => JsonSerializer.Serialize(value);
 }

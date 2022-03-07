@@ -14,7 +14,6 @@ message ReadRequest {
 
 message IsgEvent {
   shared.IsgId Id = 1;
-  streams.EventStream Stream = 2;
   types.EventType Type = 3;
   string Source = 4;
   uint64 position = 5;
@@ -23,7 +22,8 @@ message IsgEvent {
 }
 
 message IsgEventSet {
-	repeated IsgEvent events = 1;
+	streams.EventStream Stream = 1;
+	repeated IsgEvent events = 2;
 }
 
 service Reader {

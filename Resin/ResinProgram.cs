@@ -1,4 +1,5 @@
 ﻿using Epoxy.Grpc;
+using Epoxy.Grpc.Reader;
 using Epoxy.Grpc.Streams;
 using Grpc.Net.Client;
 

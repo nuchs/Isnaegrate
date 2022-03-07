@@ -1,12 +1,12 @@
-﻿using Epoxy.Grpc;
-using static Epoxy.Grpc.EpoxyHelpers;
+﻿using Epoxy.Grpc.Reader;
 using EventStore.Client;
 using Grpc.Core;
-using static Epoxy.Grpc.Reader;
+using static Epoxy.Grpc.Reader.Reader;
+using static EventHelpers;
 
 namespace Epoxy.Services;
 
-public class ReaderService :ReaderBase
+public class ReaderService : ReaderBase
 {
     private readonly ILogger<ReaderService> log;
     private readonly EventStoreClient esdb;
@@ -17,10 +17,38 @@ public class ReaderService :ReaderBase
         this.esdb= esdb;
     }
 
-    public override Task<IsgEvent> Read(ReadRequest request, ServerCallContext context)
+    public override async Task<IsgEventSet> Read(ReadRequest request, ServerCallContext context)
     {
-        log.LogInformation("Some bugger wants to read {} from {}", request.Stream, request.Position);
+        try
+        {
+            var results = esdb.ReadStreamAsync(Direction.Forwards, request.Stream.ToString(), request.Position);
 
-        return Task.FromResult(NewIsgEvent("Epoxy", EventType.Test));
+            throw new Exception();
+            //var events = await from result
+            //             in results
+            //             select EventHelpers.NewIsgEvent(
+            //                 result.Event.EventId.ToString(),
+            //                 result.Event.EventType,
+            //                 result.Event.Metadata,
+            //                 result.Event.Position.CommitPosition,
+            //                 result.Event.Created,
+            //                 result.Event.Data
+            //             );
+
+            //return EventHelpers.NewIsgEventSet(result.Event.EventStreamId, events);
+                                
+        }
+        catch (Exception e)
+        {
+            log.LogError(e, "Failed to read from {} at position {}", request.Stream, request.Position);
+            throw;
+        }
     }
+
+    //public override Task<IsgEvent> Read(ReadRequest request, ServerCallContext context)
+    //{
+    //    log.LogInformation("Some bugger wants to read {} from {}", request.Stream, request.Position);
+
+    //    return Task.FromResult(NewIsgEvent("Epoxy", EventType.Test));
+    //}
 }

@@ -3,5 +3,5 @@ syntax = "proto3";
 package epoxy.grpc.shared;
 
 message IsgId {
-	string id = 1;
+	string value = 1;
 }
