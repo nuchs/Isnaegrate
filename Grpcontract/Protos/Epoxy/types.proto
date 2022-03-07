@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package Epoxy.Grpc.Types;
+package epoxy.grpc.types;
 
 enum EventType {
     Unknown = 0;

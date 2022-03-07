@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package Epoxy.Grpc.Streams;
+package epoxy.grpc.streams;
 
 enum EventStream {
     Unknown = 0;

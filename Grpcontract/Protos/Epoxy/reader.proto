@@ -1,28 +1,25 @@
 syntax = "proto3";
 
-package Epoxy.Grpc;
+package epoxy.grpc.reader;
 
 import "google/protobuf/timestamp.proto";
+import "Protos/Epoxy/shared.proto"; 
 import "Protos/Epoxy/streams.proto"; 
 import "Protos/Epoxy/types.proto"; 
 
 message ReadRequest {
-	Streams.EventStream Stream = 1;
+	streams.EventStream Stream = 1;
 	uint64 position = 2;
 }
 
-message Uid {
-	string id = 1;
-}
-
 message IsgEvent {
-  Uid Id = 1;
-  Streams.EventStream Stream = 2;
-  Types.EventType Type = 3;
+  shared.IsgId Id = 1;
+  streams.EventStream Stream = 2;
+  types.EventType Type = 3;
   string Source = 4;
   uint64 position = 5;
   google.protobuf.Timestamp When = 6;
-  bytes Payload = 7;
+  string Payload = 7;
 }
 
 message IsgEventSet {
