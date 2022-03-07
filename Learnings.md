@@ -3,6 +3,7 @@
 So much pain...
 
 ** Event Store
+- its EventStore.Client.Grpc.Streams not EventStore.Client.Grpc you need from nuget
 - Uid's need to be set by the publisher rather than be generated further down the chain (e.g. in the proxy or event store itself). This allows for idempotent publishing
 - I believe ES is using Guids as event id's but as this isn't a native transport type for GRPC it extracts the bytes and sends them as a set of longs
 - The Uuid type does not expose the longs so you need to 

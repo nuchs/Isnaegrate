@@ -1,10 +1,9 @@
-﻿using Epoxy.Grpc.Reader;
 using EventStore.Client;
 using Grpc.Core;
+using Epoxy.Grpc.Reader;
 using static Epoxy.Grpc.Reader.Reader;
-using static EventHelpers;
 
-namespace Epoxy.Services;
+namespace Resin.Services;
 
 public class ReaderService : ReaderBase
 {
@@ -13,8 +12,8 @@ public class ReaderService : ReaderBase
 
     public ReaderService(EventStoreClient esdb, ILogger<ReaderService> log)
     {
-        this.log= log;
-        this.esdb= esdb;
+        this.log = log;
+        this.esdb = esdb;
     }
 
     public override async Task<IsgEventSet> Read(ReadRequest request, ServerCallContext context)
@@ -36,7 +35,7 @@ public class ReaderService : ReaderBase
             //             );
 
             //return EventHelpers.NewIsgEventSet(result.Event.EventStreamId, events);
-                                
+
         }
         catch (Exception e)
         {
@@ -49,6 +48,6 @@ public class ReaderService : ReaderBase
     //{
     //    log.LogInformation("Some bugger wants to read {} from {}", request.Stream, request.Position);
 
-    //    return Task.FromResult(NewIsgEvent("Epoxy", EventType.Test));
+    //    return Task.FromResult(NewIsgEvent("Resin", EventType.Test));
     //}
 }

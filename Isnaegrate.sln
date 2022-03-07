@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grpcontract", "Grpcontract\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nimm2", "Nimm2\Nimm2.csproj", "{F9C0FFBA-01A7-46F1-85A8-D254643CAEAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resin", "Resin\Resin.csproj", "{046C58ED-5E4C-4B29-BA76-8E636425FB5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{F9C0FFBA-01A7-46F1-85A8-D254643CAEAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9C0FFBA-01A7-46F1-85A8-D254643CAEAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9C0FFBA-01A7-46F1-85A8-D254643CAEAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{046C58ED-5E4C-4B29-BA76-8E636425FB5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{046C58ED-5E4C-4B29-BA76-8E636425FB5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{046C58ED-5E4C-4B29-BA76-8E636425FB5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{046C58ED-5E4C-4B29-BA76-8E636425FB5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

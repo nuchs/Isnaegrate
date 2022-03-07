@@ -2,14 +2,12 @@
 using Epoxy.Grpc.Shared;
 using Epoxy.Grpc.Streams;
 using Epoxy.Grpc.Types;
-using Epoxy.Grpc.Writer;
-using EventStore.Client;
 using Google.Protobuf.WellKnownTypes;
 using System.Text;
 
-namespace Epoxy.Services;
+namespace Resin.Services;
 
-public static class EventHelpers
+public static class Helpers
 {
     public static IsgEventSet NewIsgEventSet(string stream, IEnumerable<IsgEvent> events)
     {
@@ -31,11 +29,4 @@ public static class EventHelpers
             When = Timestamp.FromDateTime(when),
             Payload = Encoding.UTF8.GetString(payload)
         };
-
-    public static EventData ToEventData(this Proposition prop)
-        => new EventData(
-            Uuid.Parse(prop.Id.Value),
-            prop.Type.ToString(),
-            Encoding.UTF8.GetBytes(prop.Payload),
-            Encoding.UTF8.GetBytes(prop.Source));
 }

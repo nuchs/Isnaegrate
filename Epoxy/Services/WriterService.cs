@@ -20,6 +20,8 @@ public class WriterService : WriterBase
     {
         try
         {
+            log.LogInformation("Writing {} events to {}", request.Propositions.Count, request.Stream);
+
             var result = await esdb.AppendToStreamAsync(
                 request.Stream.ToString(),
                 StreamState.Any,
