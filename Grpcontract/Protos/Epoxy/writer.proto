@@ -6,14 +6,14 @@ import "Protos/Epoxy/streams.proto";
 import "Protos/Epoxy/types.proto"; 
 
 message Proposition {
-	Streams.EventStream stream = 1;
-	Types.EventType type = 2;
-	string source = 3;
-	bytes payload = 4;
+	Types.EventType type = 1;
+	string source = 2;
+	bytes payload = 3;
 }
 
 message PropositionSet {
-	repeated Proposition proposition = 1;
+	Streams.EventStream stream = 1;
+	repeated Proposition propositions = 2;
 }
 
 message OpResult {
