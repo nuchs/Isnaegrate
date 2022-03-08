@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package ing.grpc.resin;
+
+import "google/protobuf/timestamp.proto";
+import "Protos/Common/events.proto"; 
+
+message ReadRequest {
+	common.events.EventStream Stream = 1;
+	uint64 position = 2;
+}
+
+message IsgEvent {
+  common.events.IsgId Id = 1;
+  common.events.EventType Type = 3;
+  string Source = 4;
+  uint64 position = 5;
+  google.protobuf.Timestamp When = 6;
+  string Payload = 7;
+}
+
+service Reader {
+  rpc Read (ReadRequest) returns (stream IsgEvent);
+} 
+

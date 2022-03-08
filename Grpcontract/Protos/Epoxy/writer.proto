@@ -1,20 +1,18 @@
 syntax = "proto3";
 
-package epoxy.grpc.writer;
+package ing.grpc.epoxy;
 
-import "Protos/Epoxy/shared.proto"; 
-import "Protos/Epoxy/streams.proto"; 
-import "Protos/Epoxy/types.proto"; 
+import "Protos/Common/events.proto"; 
 
 message Proposition {
-	shared.IsgId id = 1;
-	types.EventType type = 2;
+	common.events.IsgId id = 1;
+	common.events.EventType type = 2;
 	string source = 3;
 	string payload = 4;
 }
 
 message PropositionSet {
-	streams.EventStream stream = 1;
+	common.events.EventStream stream = 1;
 	repeated Proposition propositions = 2;
 }
 

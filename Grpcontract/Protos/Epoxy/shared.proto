@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package epoxy.grpc.shared;
-
-message IsgId {
-	string value = 1;
-}

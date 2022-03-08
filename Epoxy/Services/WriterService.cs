@@ -1,7 +1,7 @@
-﻿using Epoxy.Grpc.Writer;
-using EventStore.Client;
+﻿using EventStore.Client;
 using Grpc.Core;
-using static Epoxy.Grpc.Writer.Writer;
+using Ing.Grpc.Epoxy;
+using static Ing.Grpc.Epoxy.Writer;
 
 namespace Epoxy.Services;
 

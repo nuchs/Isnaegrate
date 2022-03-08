@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package epoxy.grpc.types;
-
-enum EventType {
-    Unknown = 0;
-    Test = 1;
-}

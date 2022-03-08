@@ -1,8 +1,5 @@
-﻿using Epoxy.Grpc.Reader;
-using Epoxy.Grpc.Shared;
-using Epoxy.Grpc.Types;
-using Epoxy.Grpc.Writer;
-using System.Text;
+﻿using Ing.Grpc.Epoxy;
+using Ing.Grpc.Common.Events;
 using System.Text.Json;
 
 namespace Epoxy.Grpc;
@@ -18,18 +15,14 @@ public static class EpoxyHelpers
             Payload = payload.Serialise()
         };
 
-    public static string ToPrettyString(this IsgEvent value)
+    public static PropositionSet NewPropositionSet(EventStream stream, IEnumerable<Proposition> props)
     {
-        var sb = new StringBuilder();
+        var propSet = new PropositionSet();
 
-        sb.AppendLine(nameof(IsgEvent));
-        sb.AppendLine($"\tId      : {value.Id}");
-        sb.AppendLine($"\tType    : {value.Type}");
-        sb.AppendLine($"\tSource  : {value.Source}");
-        sb.AppendLine($"\tWhen    : {value.When}");
-        sb.AppendLine($"\tPayload : {value.Payload }");
+        propSet.Propositions.AddRange(props);
+        propSet.Stream = stream;
 
-        return sb.ToString();
+        return propSet;
     }
 
     private static IsgId ToIsgId(this Guid value) => new IsgId() { Value = value.ToString() };

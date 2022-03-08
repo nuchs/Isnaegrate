@@ -8,7 +8,7 @@
     <Authors>Nuchs</Authors>
     <Description>Library for sharing protobuf files and associated helpers</Description>
     <Company>Smilies</Company>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,15 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Protos\Epoxy\shared.proto" />
-    <None Remove="Protos\Epoxy\types.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Protobuf Include="Protos\Epoxy\shared.proto" />
-    <Protobuf Include="Protos\Epoxy\streams.proto" />
-    <Protobuf Include="Protos\Epoxy\types.proto" />
-    <Protobuf Include="Protos\Epoxy\reader.proto" />
+    <Protobuf Include="Protos\Common\events.proto" />
+    <Protobuf Include="Protos\Resin\reader.proto" />
     <Protobuf Include="Protos\Epoxy\writer.proto" />
   </ItemGroup>
 

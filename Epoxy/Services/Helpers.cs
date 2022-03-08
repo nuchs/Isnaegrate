@@ -1,10 +1,5 @@
-﻿using Epoxy.Grpc.Reader;
-using Epoxy.Grpc.Shared;
-using Epoxy.Grpc.Streams;
-using Epoxy.Grpc.Types;
-using Epoxy.Grpc.Writer;
-using EventStore.Client;
-using Google.Protobuf.WellKnownTypes;
+﻿using EventStore.Client;
+using Ing.Grpc.Epoxy;
 using System.Text;
 
 namespace Epoxy.Services;
