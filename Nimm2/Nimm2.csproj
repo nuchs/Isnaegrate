@@ -18,10 +18,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Grpcontract" Version="1.0.7" />
+    <PackageReference Include="Grpcontract" Version="1.0.8" />
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="Protos\*.proto" AdditionalImportDirs="$(PkgGrpcontract)\Common" GrpcServices="Client" />
+    <Protobuf Include="Protos\*.proto" AdditionalImportDirs="$(PkgGrpcontract)\Resin" GrpcServices="Client" />
     <Protobuf Include="Protos\*.proto" AdditionalImportDirs="$(PkgGrpcontract)\Epoxy" GrpcServices="Client" />
   </ItemGroup>
 

@@ -1,7 +1,7 @@
 using EventStore.Client;
 using Grpc.Core;
-using Epoxy.Grpc.Reader;
-using static Epoxy.Grpc.Reader.Reader;
+using Ing.Grpc.Resin;
+using static Ing.Grpc.Resin.Reader;
 
 namespace Resin.Services;
 
@@ -16,26 +16,23 @@ public class ReaderService : ReaderBase
         this.esdb = esdb;
     }
 
-    public override async Task<IsgEventSet> Read(ReadRequest request, ServerCallContext context)
+    public override async Task Read(ReadRequest request, IServerStreamWriter<IsgEvent> stream, ServerCallContext context)
     {
         try
         {
             var results = esdb.ReadStreamAsync(Direction.Forwards, request.Stream.ToString(), request.Position);
 
-            throw new Exception();
-            //var events = await from result
-            //             in results
-            //             select EventHelpers.NewIsgEvent(
-            //                 result.Event.EventId.ToString(),
-            //                 result.Event.EventType,
-            //                 result.Event.Metadata,
-            //                 result.Event.Position.CommitPosition,
-            //                 result.Event.Created,
-            //                 result.Event.Data
-            //             );
-
-            //return EventHelpers.NewIsgEventSet(result.Event.EventStreamId, events);
-
+            await foreach (var result in results)
+            {
+                await stream.WriteAsync(Helpers.NewIsgEvent(
+                                   result.Event.EventId.ToString(),
+                                   result.Event.EventType,
+                                   result.Event.Metadata,
+                                   result.Event.Position.CommitPosition,
+                                   result.Event.Created,
+                                   result.Event.Data
+                               ));
+            }
         }
         catch (Exception e)
         {
@@ -43,11 +40,4 @@ public class ReaderService : ReaderBase
             throw;
         }
     }
-
-    //public override Task<IsgEvent> Read(ReadRequest request, ServerCallContext context)
-    //{
-    //    log.LogInformation("Some bugger wants to read {} from {}", request.Stream, request.Position);
-
-    //    return Task.FromResult(NewIsgEvent("Resin", EventType.Test));
-    //}
 }

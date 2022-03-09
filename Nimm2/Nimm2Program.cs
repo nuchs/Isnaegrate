@@ -26,8 +26,7 @@ switch (args[0])
         return -1;
 }
 
-using var channel = GrpcChannel.ForAddress("http://localhost:5296");
-await test.Run(channel);
+await test.Run();
 
 Console.WriteLine("Press any key to exit...");
 Console.ReadKey();

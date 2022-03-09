@@ -1,32 +1,20 @@
-﻿using Epoxy.Grpc.Reader;
-using Epoxy.Grpc.Shared;
-using Epoxy.Grpc.Streams;
-using Epoxy.Grpc.Types;
-using Google.Protobuf.WellKnownTypes;
+﻿using Google.Protobuf.WellKnownTypes;
+using Ing.Grpc.Common.Events;
+using Ing.Grpc.Resin;
 using System.Text;
 
 namespace Resin.Services;
 
 public static class Helpers
 {
-    public static IsgEventSet NewIsgEventSet(string stream, IEnumerable<IsgEvent> events)
-    {
-        var set = new IsgEventSet();
-
-        set.Events.AddRange(events);
-        set.Stream = System.Enum.Parse<EventStream>(stream);
-
-        return set;
-    }
-
-    public static IsgEvent NewIsgEvent(string id, string type, byte[] source, ulong position, DateTime when, byte[] payload)
+    public static IsgEvent NewIsgEvent(string id, string type, ReadOnlyMemory<byte> source, ulong position, DateTime when, ReadOnlyMemory<byte> payload)
         => new IsgEvent()
         {
             Id = new IsgId() { Value = id },
             Type = System.Enum.Parse<EventType>(type),
-            Source = Encoding.UTF8.GetString(source),
+            Source = Encoding.UTF8.GetString(source.ToArray()),
             Position = position,
             When = Timestamp.FromDateTime(when),
-            Payload = Encoding.UTF8.GetString(payload)
+            Payload = Encoding.UTF8.GetString(payload.ToArray())
         };
 }
