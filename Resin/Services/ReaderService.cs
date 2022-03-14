@@ -40,4 +40,22 @@ public class ReaderService : ReaderBase
             throw;
         }
     }
+
+    public override async Task Subscribe(ReadRequest request, IServerStreamWriter<IsgEvent> responseStream, ServerCallContext context)
+    {
+        var sub = esdb.SubscribeToStreamAsync(request.Stream.ToString(), FromStream.After(new StreamPosition(request.Position)), (sub, ev, cancel) =>
+        {
+            return responseStream.WriteAsync(Helpers.NewIsgEvent(
+                ev.Event.EventId.ToString(),
+                ev.Event.EventType,
+                ev.Event.Metadata,
+                ev.Event.Position.CommitPosition,
+                ev.Event.Created,
+                ev.Event.Data));
+        });
+
+        await Task.WhenAll(sub);
+
+        log.LogInformation("Cancelling sub");
+    }
 }

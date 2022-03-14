@@ -8,7 +8,7 @@
     <Authors>Nuchs</Authors>
     <Description>Library for sharing protobuf files and associated helpers</Description>
     <Company>Smilies</Company>
-    <Version>1.0.8</Version>
+    <Version>1.0.9</Version>
   </PropertyGroup>
 
   <ItemGroup>

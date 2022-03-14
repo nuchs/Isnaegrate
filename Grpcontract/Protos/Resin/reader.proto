@@ -21,5 +21,6 @@ message IsgEvent {
 
 service Reader {
   rpc Read (ReadRequest) returns (stream IsgEvent);
+  rpc Subscribe (ReadRequest) returns (stream IsgEvent);
 } 
 

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Nimm2;
 
-internal class ReadTest : ITest
+internal class SubscribeTest : ITest
 {
     public string ToPrettyString(IsgEvent value)
     {
@@ -27,14 +27,18 @@ internal class ReadTest : ITest
         using var channel = GrpcChannel.ForAddress("http://localhost:5158");
 
         var client = new Reader.ReaderClient(channel);
-        var reply = client.Read(new ReadRequest { Stream = EventStream.TestStream, Position = 0 });
+        var reply = client.Subscribe(new ReadRequest { Stream = EventStream.TestStream, Position = 0 });
 
-        Console.WriteLine("Reading events");
-        Console.WriteLine("--------------");
+        Console.WriteLine("Subscribed to events");
+        Console.WriteLine("--------------------");
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         await foreach (var isgEvent in reply.ResponseStream.ReadAllAsync())
         {
+            Console.WriteLine($"Recieved after {stopwatch.ElapsedMilliseconds}");
             Console.WriteLine(ToPrettyString(isgEvent));
             Console.WriteLine();
         }
+        stopwatch.Stop();
+        Console.WriteLine($"Stopping at {stopwatch.ElapsedMilliseconds}");
     }
 }

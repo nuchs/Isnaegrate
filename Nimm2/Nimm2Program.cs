@@ -16,12 +16,16 @@ switch (args[0])
         test = new ReadTest();
         break;
 
+    case "sub":
+        test = new SubscribeTest();
+        break;
+
     case "write":
         test = new WriteTest();
         break;
 
     default:
-        Console.WriteLine("Unrecognised command {args[0]} - must be one of 'read' or 'write'");
+        Console.WriteLine("Unrecognised command {args[0]} - must be one of 'read', 'subscribe' or 'write'");
         Usage();
         return -1;
 }
