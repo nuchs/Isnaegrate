@@ -1,14 +1,22 @@
 version: "3.9"
 services:
-  baget:
-    image: "loicsharma/baget:latest"
-    env_file:
-      - "./Baget/baget.env"
+
+  epoxy:
+    build:
+      context: ./Epoxy
+      network: host
+    depends_on:
+      - logstash
+      - eventstore.db
     ports:
-      - "5555:5555"
-      - "5556:80"
-    volumes:
-      - "./Baget/baget-data:/var/baget"
+      - "5296:5296"
+    logging:
+      driver: "syslog"
+      options:
+        syslog-address: "tcp://:5000"
+    networks:
+      - isnaegrate
+
   eventstore.db:
     image: eventstore/eventstore:latest
     environment:
@@ -26,3 +34,84 @@ services:
     volumes:
       - "./esdb/data:/var/lib/eventstore"
       - "./esdb/logs:/var/log/eventstore"
+        
+  elk-setup:
+    build:
+      context: ./elk/setup/
+      args:
+        ELASTIC_VERSION: 8.1.0
+    init: true
+    volumes:
+      - elksetup:/state:Z
+    environment:
+      ELASTIC_PASSWORD: changeme
+      LOGSTASH_INTERNAL_PASSWORD: changeme
+      KIBANA_SYSTEM_PASSWORD: changeme
+    networks:
+      - isnaegrate
+
+  elasticsearch:
+    build:
+      context: ./elk/elasticsearch/
+      args:
+        ELASTIC_VERSION: 8.1.0
+    volumes:
+      - ./elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,z
+      - elasticsearch:/usr/share/elasticsearch/data:z
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: -Xmx256m -Xms256m
+      # user is elastic
+      ELASTIC_PASSWORD: changeme
+      discovery.type: single-node
+    networks:
+      - isnaegrate
+
+  logstash:
+    build:
+      context: ./elk/logstash/
+      args:
+        ELASTIC_VERSION: 8.1.0
+    volumes:
+      - ./elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
+      - ./elk/logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
+    ports:
+      - "5044:5044"
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: -Xmx256m -Xms256m
+      # user is logstash_internal
+      LOGSTASH_INTERNAL_PASSWORD: changeme
+    networks:
+      - isnaegrate
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    build:
+      context: ./elk/kibana/
+      args:
+        ELASTIC_VERSION: 8.1.0
+    volumes:
+      - ./elk/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
+    ports:
+      - "5601:5601"
+    environment:
+      # user is kibana_system
+      KIBANA_SYSTEM_PASSWORD: changeme
+    networks:
+      - isnaegrate
+    depends_on:
+      - elasticsearch
+
+networks:
+  isnaegrate:
+    driver: bridge
+
+volumes:
+  elksetup:
+  elasticsearch:

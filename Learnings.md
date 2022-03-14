@@ -6,7 +6,7 @@ So much pain...
 - its EventStore.Client.Grpc.Streams not EventStore.Client.Grpc you need from nuget
 - Uid's need to be set by the publisher rather than be generated further down the chain (e.g. in the proxy or event store itself). This allows for idempotent publishing
 - I believe ES is using Guids as event id's but as this isn't a native transport type for GRPC it extracts the bytes and sends them as a set of longs
-- The Uuid type does not expose the longs so you need to 
+- The Uuid type does not expose the longs so you need to
 	1. use EventStore types everywhere
 	2. Convert the id to a guid (it provides a helper) and turn to bytes
 	3. convert the id to a string (it provides a helper which basically turns the long to a guid and then to a string)
@@ -22,3 +22,11 @@ So much pain...
 - don't put them in the nuget package until they've stabilised, it's a pain the arse while you're iterating.
 - Namespace collisions are easy when you have lots of contracts, make liberal use of packages
 - clean rebuilds often, the protobuf compiler gets wedged frequently
+
+** Docker
+- the build system needs to be in a separate stack from the deployed app (otherwise it can't come up to build stuff)
+- You can specify a network to attach to during build
+
+** Elastic
+- turn datastream off for the logstash destination or stuff doesn't get added to the right index
+- filebeat is just pain to set up
