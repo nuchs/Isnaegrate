@@ -24,7 +24,21 @@ internal class SubscribeTest : ITest
 
     public async Task Run()
     {
-        using var channel = GrpcChannel.ForAddress("http://localhost:5158");
+        try
+        {
+            await DoSub();
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Proxy dropped connection");
+            Console.WriteLine(e);
+        }    
+    }
+
+    private async Task DoSub()
+    {
+        var channel = GrpcChannel.ForAddress("http://localhost:5158");
 
         var client = new Reader.ReaderClient(channel);
         var reply = client.Subscribe(new ReadRequest { Stream = EventStream.TestStream, Position = 0 });

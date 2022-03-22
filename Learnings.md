@@ -14,6 +14,8 @@ So much pain...
 - Because the event store api records payload data as byte[] then we have the following options for our payload type (assuming json serialization)
 	1. T -> json string -> bytestring [send to proxy ]-> byte[] -> bytestring [send to event store ] -> byte[]
 	2. T -> json string [send to proxy ] -> byte[] -> bytestring [send to event store ] -> byte[]
+- Subscription connecitions need to stay open so events can be sent back 
+- if connection to es drops then a EventStoreClient will spin pretty fast trying to reconnect. Can;t see an obvious way to turn it off. Could probably be done with an interceptor but would be easy to have unintended consequences
 
 ** Grpc
 - Enum values must be unique per *package* (damn you c++)
@@ -25,8 +27,18 @@ So much pain...
 
 ** Docker
 - the build system needs to be in a separate stack from the deployed app (otherwise it can't come up to build stuff)
-- You can specify a network to attach to during build
+- You can specify a network to attach to during build, you need to do this if you want it to access stuff on your network? 
+- build only supprts host network
+- tcp logging drivers mean a container won't start if server is unavailable
+- blocking literally stops the container, bad if the log is a network call
+- non blokcing has a buffer which can overflow
+- if you depend on container startup order make sure the dependencies actually report when ready not hwen the container has started
+- docker compose and caching... make sure everythign is clean or you  will lose your sanity
+- host names all change when running in compose, connections to localhost now go to a service whose name is defined in the compose file
+- don't change the service names in docker compose while the service is running as compose will no longer recognise it
+- docker compose up doesn't auto rebuild
 
 ** Elastic
 - turn datastream off for the logstash destination or stuff doesn't get added to the right index
 - filebeat is just pain to set up
+

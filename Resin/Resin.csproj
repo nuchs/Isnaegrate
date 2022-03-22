@@ -19,5 +19,9 @@
   <ItemGroup>
     <Protobuf Include="Protos\*.proto" AdditionalImportDirs="$(PkgGrpcontract)\Epoxy" GrpcServices="Server" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Nimm2\Nimm2.csproj" />
+  </ItemGroup>
   
 </Project>

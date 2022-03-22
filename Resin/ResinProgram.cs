@@ -24,7 +24,12 @@ catch (Exception ex)
 
 ILogger<Program> CreateBootLogger()
 {
-    using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+    using var loggerFactory = LoggerFactory.Create(builder => builder.AddSystemdConsole(conf =>
+    {
+        conf.IncludeScopes = true;
+        conf.TimestampFormat = "H:mm:ss.fff K ";
+        conf.UseUtcTimestamp = true;
+    }));
 
     var logger = loggerFactory.CreateLogger<Program>();
 
@@ -41,6 +46,14 @@ WebApplication BuildApp()
     var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddEventStoreClient(builder.Configuration["ConnectionStrings:EventStore"]);
     builder.Services.AddGrpc();
+
+    builder.Logging.ClearProviders();
+    builder.Logging.AddSystemdConsole(conf =>
+    {
+        conf.IncludeScopes = false;
+        conf.TimestampFormat = "H:mm:ss.fff K ";
+        conf.UseUtcTimestamp = true;
+    });
 
     return builder.Build();
 }

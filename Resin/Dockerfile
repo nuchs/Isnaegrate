@@ -11,5 +11,5 @@ RUN dotnet publish -c Release -o out
 
 FROM base
 COPY --from=build /src/out .
-ENTRYPOINT ["dotnet", "Epoxy.dll"]
+ENTRYPOINT ["dotnet", "Resin.dll"]
 

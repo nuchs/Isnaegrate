@@ -9,7 +9,7 @@ services:
       - logstash
       - eventstore.db
     ports:
-      - "5296:5296"
+      - "5296:80"
     logging:
       driver: "syslog"
       options:
@@ -17,7 +17,8 @@ services:
     networks:
       - isnaegrate
 
-  eventstore.db:
+  eventstore:
+    container_name: "ing-eventstore"
     image: eventstore/eventstore:latest
     environment:
       - EVENTSTORE_CLUSTER_SIZE=1
@@ -34,6 +35,8 @@ services:
     volumes:
       - "./esdb/data:/var/lib/eventstore"
       - "./esdb/logs:/var/log/eventstore"
+    networks:
+      - isnaegrate
         
   elk-setup:
     build:
