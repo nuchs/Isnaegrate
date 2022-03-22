@@ -1,13 +1,29 @@
 version: "3.9"
 services:
 
+  resin:
+    build:
+      context: ./Resin
+      network: host
+    depends_on:
+      - logstash
+      - eventstore
+    ports:
+      - "5158:80"
+    logging:
+      driver: "syslog"
+      options:
+        syslog-address: "tcp://:5000"
+    networks:
+      - isnaegrate
+
   epoxy:
     build:
       context: ./Epoxy
       network: host
     depends_on:
       - logstash
-      - eventstore.db
+      - eventstore
     ports:
       - "5296:80"
     logging:
