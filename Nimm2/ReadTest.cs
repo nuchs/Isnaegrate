@@ -1,13 +1,14 @@
 ﻿using Grpc.Core;
 using Grpc.Net.Client;
-using Ing.Grpc.Common.Events;
-using Ing.Grpc.Resin;
+using Resin.Grpc;
 using System.Text;
 
 namespace Nimm2;
 
 internal class ReadTest : ITest
 {
+    private const string EventStream = "TestStream";
+
     public string ToPrettyString(IsgEvent value)
     {
         var sb = new StringBuilder();
@@ -27,7 +28,7 @@ internal class ReadTest : ITest
         using var channel = GrpcChannel.ForAddress("http://localhost:5158");
 
         var client = new Reader.ReaderClient(channel);
-        var reply = client.Read(new ReadRequest { Stream = EventStream.TestStream, Position = 0 });
+        var reply = client.Read(new ReadRequest { Stream = EventStream, Position = 0 });
 
         Console.WriteLine("Reading events");
         Console.WriteLine("--------------");

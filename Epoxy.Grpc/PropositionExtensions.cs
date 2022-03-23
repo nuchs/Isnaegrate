@@ -1,21 +1,19 @@
-﻿using Ing.Grpc.Epoxy;
-using Ing.Grpc.Common.Events;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace Epoxy.Grpc;
 
-public static class EpoxyHelpers
+public static class PropositionExtensions
 {
-    public static Proposition NewProposition<T>(Guid id, EventType type, string source, T payload)
+    public static Proposition NewProposition<T>(Guid id, string type, string source, T payload)
         => new Proposition()
         {
-            Id = id.ToIsgId(),
+            Id = id.ToString(),
             Type = type,
             Source = source.Serialise(),
             Payload = payload.Serialise()
         };
 
-    public static PropositionSet NewPropositionSet(EventStream stream, IEnumerable<Proposition> props)
+    public static PropositionSet NewPropositionSet(string stream, params Proposition[] props)
     {
         var propSet = new PropositionSet();
 
@@ -25,7 +23,6 @@ public static class EpoxyHelpers
         return propSet;
     }
 
-    private static IsgId ToIsgId(this Guid value) => new IsgId() { Value = value.ToString() };
 
     private static string Serialise<T>(this T value) => JsonSerializer.Serialize(value);
 }

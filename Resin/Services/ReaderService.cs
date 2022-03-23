@@ -1,7 +1,7 @@
 using EventStore.Client;
 using Grpc.Core;
-using Ing.Grpc.Resin;
-using static Ing.Grpc.Resin.Reader;
+using Resin.Grpc;
+using static Resin.Grpc.Reader;
 
 namespace Resin.Services;
 

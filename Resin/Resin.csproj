@@ -7,13 +7,13 @@
     <Authors>Nuchs</Authors>
     <Description>Eventstore Read Proxy</Description>
     <Company>Smilies</Company>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="EventStore.Client.Grpc.Streams" Version="22.0.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.43.0" />
-    <PackageReference Include="Grpcontract" Version="1.0.9" />
+    <PackageReference Include="Resin.Grpc" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>

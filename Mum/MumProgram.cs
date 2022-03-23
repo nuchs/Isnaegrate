@@ -1,8 +1,8 @@
 using Mum.Data;
 using Mum.Pages.Index;
 using System.Reflection;
-using static Ing.Grpc.Epoxy.Writer;
-using static Ing.Grpc.Resin.Reader;
+using static Epoxy.Grpc.Writer;
+using static Resin.Grpc.Reader;
 
 const string AppName = "Mum";
 var log = CreateBootLogger();

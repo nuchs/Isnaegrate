@@ -15,13 +15,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epoxy", "Epoxy\Epoxy.csproj", "{CF220D42-15B2-4AA4-AD46-9AE41B19BD40}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grpcontract", "Grpcontract\Grpcontract.csproj", "{AD983B50-8823-479B-8C24-B99E15D2D773}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nimm2", "Nimm2\Nimm2.csproj", "{F9C0FFBA-01A7-46F1-85A8-D254643CAEAE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resin", "Resin\Resin.csproj", "{046C58ED-5E4C-4B29-BA76-8E636425FB5E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mum", "Mum\Mum.csproj", "{C4D4929D-BD84-44BD-9C63-80C99A20786A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resin.Grpc", "Resin.Grpc\Resin.Grpc.csproj", "{74F5504F-EC4B-498E-B4B4-207C2708B5CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epoxy.Grpc", "Epoxy.Grpc\Epoxy.Grpc.csproj", "{225EC36E-6389-4F82-96D3-7985E51AE5B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +39,6 @@ Global
 		{CF220D42-15B2-4AA4-AD46-9AE41B19BD40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF220D42-15B2-4AA4-AD46-9AE41B19BD40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF220D42-15B2-4AA4-AD46-9AE41B19BD40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD983B50-8823-479B-8C24-B99E15D2D773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD983B50-8823-479B-8C24-B99E15D2D773}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD983B50-8823-479B-8C24-B99E15D2D773}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD983B50-8823-479B-8C24-B99E15D2D773}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F9C0FFBA-01A7-46F1-85A8-D254643CAEAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F9C0FFBA-01A7-46F1-85A8-D254643CAEAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9C0FFBA-01A7-46F1-85A8-D254643CAEAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,6 +51,14 @@ Global
 		{C4D4929D-BD84-44BD-9C63-80C99A20786A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4D4929D-BD84-44BD-9C63-80C99A20786A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4D4929D-BD84-44BD-9C63-80C99A20786A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74F5504F-EC4B-498E-B4B4-207C2708B5CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74F5504F-EC4B-498E-B4B4-207C2708B5CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74F5504F-EC4B-498E-B4B4-207C2708B5CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74F5504F-EC4B-498E-B4B4-207C2708B5CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{225EC36E-6389-4F82-96D3-7985E51AE5B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{225EC36E-6389-4F82-96D3-7985E51AE5B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{225EC36E-6389-4F82-96D3-7985E51AE5B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{225EC36E-6389-4F82-96D3-7985E51AE5B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

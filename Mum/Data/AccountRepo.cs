@@ -1,28 +1,22 @@
-﻿using System.Collections.Concurrent;
-using System.Text;
-using System.Text.Json;
-using Grpc.Net.Client;
-using Ing.Grpc.Common.Events;
-using Ing.Grpc.Epoxy;
-using static Epoxy.Grpc.EpoxyHelpers;
-using static Ing.Grpc.Epoxy.Writer;
-using static Ing.Grpc.Resin.Reader;
-using Grpc.Core;
-using Grpc.Net.Client;
-using Ing.Grpc.Common.Events;
-using Ing.Grpc.Resin;
-using System.Text;
+﻿using Grpc.Core;
+using Resin.Grpc;
+using System.Collections.Concurrent;
+
+using static Epoxy.Grpc.PropositionExtensions;
+using static Epoxy.Grpc.Writer;
+using static Resin.Grpc.Reader;
 
 namespace Mum.Data;
 
-internal sealed class AccountRepo: IDisposable
+internal sealed class AccountRepo : IAsyncDisposable
 {
+    private const string EventStream = "Account";
     private readonly ConcurrentDictionary<Guid, Account> accounts = new();
     private readonly ILogger log;
     private readonly ReaderClient reader;
     private readonly WriterClient writer;
     private readonly Task subsTask;
-    private readonly CancellationTokenSource subsToken;
+    private readonly CancellationTokenSource subsCts;
 
     public AccountRepo(WriterClient writer, ReaderClient reader, ILogger<AccountRepo> log)
     {
@@ -30,25 +24,25 @@ internal sealed class AccountRepo: IDisposable
         this.writer = writer;
         this.reader = reader;
 
-        subsToken = new CancellationTokenSource();
-        subsTask = Task.Run(Subscription, subsToken.Token);
-    }
-
-    public void Dispose()
-    {
-        subsToken.Cancel();
-        subsTask.Wait();
+        subsCts = new CancellationTokenSource();
+        subsTask = Task.Run(Subscription, subsCts.Token);
     }
 
     internal int NumberAccounts => accounts.Count;
 
+    public async ValueTask DisposeAsync()
+    {
+        subsCts.Cancel();
+        await subsTask;
+    }
+
     internal async Task Subscription()
     {
-        log.LogInformation("Subscribing to account stream");
+        log.LogInformation("Subscribing to {} stream", EventStream);
 
-        var reply = reader.Subscribe(new ReadRequest { Stream = EventStream.Account, Position = 0 });
+        var reply = reader.Subscribe(new ReadRequest { Stream = EventStream, Position = 0 }, cancellationToken: subsCts.Token);
 
-        await foreach (var isgEvent in reply.ResponseStream.ReadAllAsync())
+        await foreach (var isgEvent in reply.ResponseStream.ReadAllAsync(subsCts.Token))
         {
             ProcessEvent(isgEvent);
         }
@@ -73,8 +67,6 @@ internal sealed class AccountRepo: IDisposable
             eventType = AccountEventTypes.Updated;
         }
 
-        accounts.AddOrUpdate(account.Id, _ => account, (_, _) => account);
-
         await RecordAccountEvent(account, eventType);
 
         log.LogDebug("{} account {} for {}", eventType, account.Id, account.Name);
@@ -82,7 +74,7 @@ internal sealed class AccountRepo: IDisposable
 
     internal async Task RemoveAccount(Guid accountId)
     {
-        if (accounts.Remove(accountId, out var account))
+        if (accounts.TryGetValue(accountId, out var account))
         {
             await RecordAccountEvent(account.Id, AccountEventTypes.Deleted);
 
@@ -90,76 +82,35 @@ internal sealed class AccountRepo: IDisposable
         }
     }
 
-
-    //private AccountEventTypes GetEventType(ResolvedEvent rawEvent)
-    //{
-    //    if (Enum.TryParse<AccountEventTypes>(rawEvent.Event.EventType, out var type))
-    //    {
-    //        return type;
-    //    }
-    //    else
-    //    {
-    //        return AccountEventTypes.Unknown;
-    //    }
-    //}
-
-    //        throw new NullReferenceException("Event contained no data");
-    //    }
-    //    catch
-    //    {
-    //        log.LogError("Failed to deserialise {} event {}", raw.Event.EventType, raw.Event.EventId);
-    //        throw;
-    //    }
-    //}
-
-    //        if (value != null)
-    //        {
-    //            return value;
-    //        }
-
     private async Task RecordAccountEvent<T>(T payload, AccountEventTypes eventType)
     {
-       // var json = JsonSerializer.Serialize(payload);
-       // var eventData = new EventData(
-       //    Uuid.NewUuid(),
-       //    eventType.ToString(),
-       //    Encoding.UTF8.GetBytes(json)
-       //);
+        var propSet = NewPropositionSet(
+            EventStream,
+            NewProposition(Guid.NewGuid(), eventType.ToString(), "Mum", payload));
 
-       // await es.AppendToStreamAsync(
-       //     AccountStream,
-       //     StreamState.Any,
-       //     new[] { eventData }
-       // );
+        await writer.AppendAsync(propSet);
     }
 
     private void ProcessEvent(IsgEvent rawEvent)
     {
-        //switch (GetEventType(rawEvent))
-        //{
-        //    case AccountEventTypes.Added:
-        //    case AccountEventTypes.Updated:
-        //        var accountData = DeserialiseEvent<Account>(rawEvent);
-        //        accounts.AddOrUpdate(accountData.Id, _ => accountData, (_, _) => accountData);
-        //        log.LogDebug("{} account {} for {}", rawEvent.Event.EventType, accountData.Id, accountData.Name);
-        //        break;
+        switch (rawEvent.GetEventType<AccountEventTypes>())
+        {
+            case AccountEventTypes.Added:
+            case AccountEventTypes.Updated:
+                var accountData = rawEvent.DeserialiseEvent<Account>();
+                accounts.AddOrUpdate(accountData.Id, _ => accountData, (_, _) => accountData);
+                log.LogDebug("{} account {} for {}", rawEvent.Type, accountData.Id, accountData.Name);
+                break;
 
-        //    case AccountEventTypes.Deleted:
-        //        var accountId = DeserialiseEvent<Guid>(rawEvent);
-        //        accounts.Remove(accountId, out var account);
-        //        log.LogDebug("Removed account {} for {}", accountId, account?.Name);
-        //        break;
+            case AccountEventTypes.Deleted:
+                var accountId = rawEvent.DeserialiseEvent<Guid>();
+                accounts.Remove(accountId, out var account);
+                log.LogDebug("Removed account {} for {}", accountId, account?.Name);
+                break;
 
-        //    default:
-        //        log.LogWarning("Unable to process event - Unknown event type: {}", rawEvent.Event.EventType);
-        //        break;
-        //}
+            default:
+                log.LogWarning("Unable to process event - Unknown event type: {}", rawEvent.Type);
+                break;
+        }
     }
-
-    //private T DeserialiseEvent<T>(ResolvedEvent raw)
-    //{
-    //    try
-    //    {
-    //        var json = Encoding.UTF8.GetString(raw.Event.Data.Span);
-    //        var value = JsonSerializer.Deserialize<T>(json);
 }
