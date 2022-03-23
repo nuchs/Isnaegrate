@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nimm2", "Nimm2\Nimm2.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resin", "Resin\Resin.csproj", "{046C58ED-5E4C-4B29-BA76-8E636425FB5E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mum", "Mum\Mum.csproj", "{C4D4929D-BD84-44BD-9C63-80C99A20786A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{046C58ED-5E4C-4B29-BA76-8E636425FB5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{046C58ED-5E4C-4B29-BA76-8E636425FB5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{046C58ED-5E4C-4B29-BA76-8E636425FB5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4D4929D-BD84-44BD-9C63-80C99A20786A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4D4929D-BD84-44BD-9C63-80C99A20786A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4D4929D-BD84-44BD-9C63-80C99A20786A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4D4929D-BD84-44BD-9C63-80C99A20786A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
