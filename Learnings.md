@@ -16,6 +16,7 @@ So much pain...
 	2. T -> json string [send to proxy ] -> byte[] -> bytestring [send to event store ] -> byte[]
 - Subscription connecitions need to stay open so events can be sent back 
 - if connection to es drops then a EventStoreClient will spin pretty fast trying to reconnect. Can;t see an obvious way to turn it off. Could probably be done with an interceptor but would be easy to have unintended consequences
+- You can get an off by one error on events, subscriptions/reads start after teh point you specify. The point is unsigned so min is 0 but 0 is valid event so need to specify null
 
 ** Grpc
 - Enum values must be unique per *package* (damn you c++)

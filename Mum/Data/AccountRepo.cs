@@ -26,6 +26,7 @@ internal sealed class AccountRepo : IAsyncDisposable
 
         subsCts = new CancellationTokenSource();
         subsTask = Task.Run(Subscription, subsCts.Token);
+        log.LogInformation("AccountRepo ready");
     }
 
     internal int NumberAccounts => accounts.Count;
@@ -33,7 +34,23 @@ internal sealed class AccountRepo : IAsyncDisposable
     public async ValueTask DisposeAsync()
     {
         subsCts.Cancel();
-        await subsTask;
+
+        try
+        {
+            await subsTask;
+        }
+        catch (OperationCanceledException)
+        {
+            log.LogInformation("Closed subscription");
+        }
+        catch(RpcException ex) when (ex.Status.StatusCode == StatusCode.Cancelled)
+        {
+            log.LogInformation("Closed subscription");
+        }
+        catch(Exception ex)
+        {
+            log.LogWarning(ex, "Error while closing subscription");
+        }
     }
 
     internal async Task Subscription()
@@ -46,8 +63,6 @@ internal sealed class AccountRepo : IAsyncDisposable
         {
             ProcessEvent(isgEvent);
         }
-
-        log.LogInformation("Closing subscription");
     }
 
     internal IEnumerable<Account> GetAllAccounts()

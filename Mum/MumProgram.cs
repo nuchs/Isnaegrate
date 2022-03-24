@@ -12,7 +12,6 @@ try
     var app = BuildApp();
 
     ConfigureRequestPipeline(app);
-    await Initialise(app);
     StartApp(app);
 
     return 0;
@@ -59,10 +58,10 @@ WebApplication BuildApp()
 
     builder.Services.AddRazorPages();
     builder.Services.AddServerSideBlazor();
-    builder.Services.AddGrpcClient<WriterClient>("MichaelEpoxy", o => {
+    builder.Services.AddGrpcClient<WriterClient>("Epoxy", o => {
         o.Address = new Uri(builder.Configuration["ConnectionStrings:Epoxy"]);
     });
-    builder.Services.AddGrpcClient<ReaderClient>("MichaelResin", o => {
+    builder.Services.AddGrpcClient<ReaderClient>("Resin", o => {
         o.Address = new Uri(builder.Configuration["ConnectionStrings:Resin"]);
     });
 
@@ -92,14 +91,4 @@ void StartApp(WebApplication app)
     log.LogInformation($"{AppName} is cocked, locked and ready to rock!");
     app.Run();
     log.LogInformation($"Bye from {AppName}");
-}
-
-async Task Initialise(WebApplication app)
-{
-    var repo = app.Services.GetService<AccountRepo>();
-
-    if (repo is not null)
-    {
-        await repo.Subscription();
-    }
 }
