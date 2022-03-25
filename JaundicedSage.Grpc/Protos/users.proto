@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package jaundicedsage.grpc;
+
+import "google/protobuf/timestamp.proto";
+
+message Empty {
+}
+
+message UserResponse {
+	oneof User {
+		UserRecord Value = 1;
+	}
+}
+
+message UserRequest {
+	string id = 1;
+}
+
+message UserRecord {
+  string Id = 1;
+  string Org = 2;
+  string Title = 3;
+  string Name = 4;
+  google.protobuf.Timestamp  CertExpires = 5;
+  google.protobuf.Timestamp  LastOnline = 6;
+}
+
+message UserListing {
+	repeated UserRecord Users = 1;
+}
+
+message AllUserRequest {
+}
+
+service UserDir {
+  rpc GetUser (UserRequest) returns (UserResponse);
+  rpc GetAllUsers (AllUserRequest) returns (UserListing);
+} 
+

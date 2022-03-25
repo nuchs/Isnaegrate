@@ -17,6 +17,7 @@ So much pain...
 - Subscription connecitions need to stay open so events can be sent back 
 - if connection to es drops then a EventStoreClient will spin pretty fast trying to reconnect. Can;t see an obvious way to turn it off. Could probably be done with an interceptor but would be easy to have unintended consequences
 - You can get an off by one error on events, subscriptions/reads start after teh point you specify. The point is unsigned so min is 0 but 0 is valid event so need to specify null
+- Projections have a warm up - they shouldn't be serving until they're up to date. You need to be careful with this because the DI system in asp won't instantiate an instance of an object until it's needed. This will often be on the first request
 
 ** Grpc
 - Enum values must be unique per *package* (damn you c++)
@@ -25,6 +26,8 @@ So much pain...
 - don't put them in the nuget package until they've stabilised, it's a pain the arse while you're iterating.
 - Namespace collisions are easy when you have lots of contracts, make liberal use of packages
 - clean rebuilds often, the protobuf compiler gets wedged frequently
+- Everythign is a value type. You need to think how to deal with the absence of a response - null is not an option try Maybe
+- grpc can only convert from datetimes if they are utc
 
 ** Docker
 - the build system needs to be in a separate stack from the deployed app (otherwise it can't come up to build stuff)

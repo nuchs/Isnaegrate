@@ -1,50 +1,55 @@
-﻿using Grpc.Net.Client;
-using Nimm2;
+﻿using Nimm2;
 
-ITest test;
-
-if (args.Length < 1)
+try
 {
-    Console.WriteLine("You must specify a command");
-    Usage();
+    if (args.Length < 1)
+    {
+        throw new ArgumentException("You provide at least one argument");
+    }
+
+    ITest test = args[0] switch
+    {
+        "sub" => new SubscribeTest(),
+        "read" => new ReadTest(),
+        "write" => new WriteTest(),
+        "users" => new UsersTest(args),
+        _ => throw new ArgumentException($"Unrecognised command {args[0]} - must be one of 'read', 'sub', 'users' or 'write'")
+    };
+
+    await test.Run();
+
+    Console.WriteLine("Press any key to exit...");
+    Console.ReadKey();
+
+    return 0;
+}
+catch (ArgumentException ex)
+{
+    Usage(ex.Message);
     return -1;
 }
-
-switch (args[0])
+catch(Exception ex)
 {
-    case "read":
-        test = new ReadTest();
-        break;
-
-    case "sub":
-        test = new SubscribeTest();
-        break;
-
-    case "write":
-        test = new WriteTest();
-        break;
-
-    default:
-        Console.WriteLine("Unrecognised command {args[0]} - must be one of 'read', 'subscribe' or 'write'");
-        Usage();
-        return -1;
+    Console.WriteLine("An error occurred");
+    Console.WriteLine(ex.Message);
+    return -2;
 }
 
-await test.Run();
 
-Console.WriteLine("Press any key to exit...");
-Console.ReadKey();
-
-return 0;
-
-void Usage()
+void Usage(string error)
 {
+    Console.WriteLine(error);
     Console.WriteLine(@"
 Usage:
     nimm2.exe <command> [options]
 
 Commands
-    read    Run the read test against resin
-    write   Run the write test against epoxy
+    read        Run the read test against resin
+    sub         Run the subscription test against epoxy
+    write       Run the write test against epoxy
+    user [id]   Run the users tests against the Jaundiced Sage
+                    - if no id is specifed all uses will be returned
+                    - if an id is returned then the user with that id will be 
+                      returned (if they exist)
 ");
 }

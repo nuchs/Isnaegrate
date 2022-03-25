@@ -1,7 +1,8 @@
-using Resin.Services;
+using JaundicedSage.Services;
 using System.Reflection;
+using static Resin.Grpc.Reader;
 
-const string AppName = "Resin";
+const string AppName = "JaundicedSage";
 var log = CreateBootLogger();
 
 try
@@ -42,11 +43,8 @@ ILogger<Program> CreateBootLogger()
 WebApplication BuildApp()
 {
     var builder = WebApplication.CreateBuilder(args);
-    
-    log.LogInformation("Building {} for {}", AppName, builder.Environment.EnvironmentName);
 
-    builder.Services.AddEventStoreClient(builder.Configuration["ConnectionStrings:EventStore"]);
-    builder.Services.AddGrpc();
+    log.LogInformation("Building {} for {}", AppName, builder.Environment.EnvironmentName);
 
     builder.Logging.ClearProviders();
     builder.Logging.AddSystemdConsole(conf =>
@@ -56,19 +54,26 @@ WebApplication BuildApp()
         conf.UseUtcTimestamp = true;
     });
 
+    builder.Services.AddGrpc();
+    builder.Services.AddGrpcClient<ReaderClient>("Resin", o => {
+        o.Address = new Uri(builder.Configuration["ConnectionStrings:Resin"]);
+    });
+    builder.Services.AddSingleton<UserRepo>();
+
     return builder.Build();
 }
 
 void ConfigureRequestPipeline(WebApplication app)
 {
     log.LogInformation("Configuring the request pipeline");
-    app.MapGrpcService<ReaderService>();
+    app.MapGrpcService<UserDirService>();
     app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 }
 
 void StartApp(WebApplication app)
 {
-    log.LogInformation($"{AppName} is cocked, locked and ready to rock!");
+    log.LogInformation("{} is cocked, locked and ready to rock!", AppName);
     app.Run();
-    log.LogInformation($"Bye from {AppName}");
+    log.LogInformation("Bye from {}", AppName);
 }
+

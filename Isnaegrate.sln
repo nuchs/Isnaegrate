@@ -21,9 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resin", "Resin\Resin.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mum", "Mum\Mum.csproj", "{C4D4929D-BD84-44BD-9C63-80C99A20786A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resin.Grpc", "Resin.Grpc\Resin.Grpc.csproj", "{74F5504F-EC4B-498E-B4B4-207C2708B5CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resin.Grpc", "Resin.Grpc\Resin.Grpc.csproj", "{74F5504F-EC4B-498E-B4B4-207C2708B5CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epoxy.Grpc", "Epoxy.Grpc\Epoxy.Grpc.csproj", "{225EC36E-6389-4F82-96D3-7985E51AE5B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epoxy.Grpc", "Epoxy.Grpc\Epoxy.Grpc.csproj", "{225EC36E-6389-4F82-96D3-7985E51AE5B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JaundicedSage", "JaundicedSage\JaundicedSage.csproj", "{7D9F3651-D431-45FE-BF41-A1FCA1F98B07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JaundicedSage.Grpc", "JaundicedSage.Grpc\JaundicedSage.Grpc.csproj", "{493CCA4F-431F-4F8A-AB13-C41C8757BE43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +63,14 @@ Global
 		{225EC36E-6389-4F82-96D3-7985E51AE5B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{225EC36E-6389-4F82-96D3-7985E51AE5B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{225EC36E-6389-4F82-96D3-7985E51AE5B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D9F3651-D431-45FE-BF41-A1FCA1F98B07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D9F3651-D431-45FE-BF41-A1FCA1F98B07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D9F3651-D431-45FE-BF41-A1FCA1F98B07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D9F3651-D431-45FE-BF41-A1FCA1F98B07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{493CCA4F-431F-4F8A-AB13-C41C8757BE43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{493CCA4F-431F-4F8A-AB13-C41C8757BE43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{493CCA4F-431F-4F8A-AB13-C41C8757BE43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{493CCA4F-431F-4F8A-AB13-C41C8757BE43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

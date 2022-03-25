@@ -36,9 +36,9 @@ ILogger<Program> CreateBootLogger()
 
 WebApplication BuildApp()
 {
-    log.LogInformation("Building Application");
-
     var builder = WebApplication.CreateBuilder(args);
+
+    log.LogInformation("Building {} for {}", AppName, builder.Environment.EnvironmentName);
 
     builder.Services.AddRazorPages();
     builder.Services.AddServerSideBlazor();
