@@ -17,13 +17,15 @@ using Bowser.Data;
 
 namespace Bowser.Pages
 {
-    public partial class Content
+    public sealed partial class Content :IAsyncDisposable
     {
-        protected override Task OnParametersSetAsync()
+        protected override async Task OnParametersSetAsync()
         {
             User = repo.First(u => u.Id == UserId);
 
-            return base.OnParametersSetAsync();
+            await session.StartSession(UserId);
+
+            await base.OnParametersSetAsync();
         }
 
         public User User { get; set; }
@@ -34,6 +36,11 @@ namespace Bowser.Pages
         public void Logout()
         {
             nav.NavigateTo("/");
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            await session.EndSession(UserId);
         }
     }
 }

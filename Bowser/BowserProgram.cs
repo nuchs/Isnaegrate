@@ -1,7 +1,7 @@
 using Bowser.Data;
 using System.Reflection;
 using static Jaundicedsage.Grpc.UserDir;
-using static Resin.Grpc.Reader;
+using static Epoxy.Grpc.Writer;
 
 const string AppName = "Bowser";
 var log = CreateBootLogger();
@@ -64,13 +64,14 @@ WebApplication BuildApp()
     {
         o.Address = new Uri(builder.Configuration["ConnectionStrings:JaundicedSage"]);
     });
-    builder.Services.AddGrpcClient<ReaderClient>("Resin", o =>
+    builder.Services.AddGrpcClient<WriterClient>("Epoxy", o =>
     {
-        o.Address = new Uri(builder.Configuration["ConnectionStrings:Resin"]);
+        o.Address = new Uri(builder.Configuration["ConnectionStrings:Epoxy"]);
     });
 
     builder.Services.AddHostedService<UserRepoWorker>();
     builder.Services.AddSingleton<UserRepo>();
+    builder.Services.AddSingleton<SessionManager>();
 
     return builder.Build();
 }
