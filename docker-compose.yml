@@ -1,6 +1,24 @@
 version: "3.9"
 services:
 
+  bowser:
+    container_name: "ing-bowser"
+    build:
+      context: ./Bowser
+      network: host
+    depends_on:
+      - logstash
+      - jaundiced-sage
+      - epoxy
+    ports:
+      - "7127:80"
+    logging:
+      driver: "syslog"
+      options:
+        syslog-address: "tcp://:5000"
+    networks:
+      - isnaegrate
+
   jaundiced-sage:
     container_name: "ing-jaundiced-sage"
     build:
@@ -8,7 +26,7 @@ services:
       network: host
     depends_on:
       - logstash
-      - ing-mum
+      - resin
     ports:
       - "5079:80"
     logging:
@@ -25,8 +43,8 @@ services:
       network: host
     depends_on:
       - logstash
-      - ing-resin
-      - ing-eproxy
+      - resin
+      - epoxy
     ports:
       - "5266:80"
     logging:

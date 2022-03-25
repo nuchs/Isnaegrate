@@ -42,6 +42,8 @@ So much pain...
 - don't change the service names in docker compose while the service is running as compose will no longer recognise it
 - docker compose up doesn't auto rebuild
 - you need a separate docker compose file for each set of things you want to manage independently (e.g. if you want logging to stay up when system comes down it needs its own file)
+- stopping a service with compose doesn't stop its dependencies
+- start up order is hard, dependencies can't be depended on
 
 ** Elastic
 - turn datastream off for the logstash destination or stuff doesn't get added to the right index

@@ -18,6 +18,8 @@ public class UserDirService : UserDirBase
 
     public override Task<UserListing> GetAllUsers(AllUserRequest request, ServerCallContext context)
     {
+        log.LogInformation("Getting all users");
+
         var listing = new UserListing();
         listing.Users.AddRange(userRepo.GetAllUsers().Select(u => new UserRecord() { 
             Id = u.Id.ToString(),
@@ -33,10 +35,14 @@ public class UserDirService : UserDirBase
 
     public override Task<UserResponse> GetUser(UserRequest request, ServerCallContext context)
     {
+        log.LogInformation("Getting user with id {}", request.Id);
+
         var user = userRepo.GetUser(request.Id);
 
         if (user == null)
         {
+            log.LogWarning("No such user {}", request.Id);
+
             return Task.FromResult(new UserResponse());
         }
         else

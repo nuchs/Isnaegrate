@@ -7,9 +7,17 @@ namespace Bowser.Data;
 public class UserRepo : IEnumerable<User>
 {
     private readonly ConcurrentBag<User> users = new ConcurrentBag<User>();
+    private readonly ILogger<UserRepo> log;
+
+    public UserRepo(ILogger<UserRepo> log)
+    {
+        this.log = log;
+    }
 
     public void Add(UserRecord user)
     {
+        log.LogInformation("Adding user {user}", user.Id);
+
         users.Add(new User(
               user.Id,
               user.Title,
