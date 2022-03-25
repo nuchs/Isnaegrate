@@ -2,6 +2,7 @@ version: "3.9"
 services:
 
   jaundiced-sage:
+    container_name: "ing-jaundiced-sage"
     build:
       context: ./JaundicedSage
       network: host

@@ -24,9 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\*.proto" AdditionalImportDirs="$(PkgGrpcontract)\Common" GrpcServices="Client" />
-    <Protobuf Include="Protos\*.proto" AdditionalImportDirs="$(PkgGrpcontract)\Resin" GrpcServices="Client" />
-    <Protobuf Include="Protos\*.proto" AdditionalImportDirs="$(PkgGrpcontract)\Epoxy" GrpcServices="Client" />
+    <Protobuf Include="Protos\*.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

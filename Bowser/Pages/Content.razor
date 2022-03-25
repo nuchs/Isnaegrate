@@ -1,0 +1,22 @@
+﻿@page "/content/{UserId}"
+@using Bowser.Data
+@inject UserRepo repo
+@inject NavigationManager nav
+
+<h3>Content</h3>
+
+<p>You are logged in as @User.Title @User.Name</p>
+<h2>User details</h2>
+<table>
+    <tr>
+        <th>Id</th><td>@User.Id</td>
+    </tr>
+    <tr>
+        <th>Org</th><td>@User.Org</td>
+    </tr>
+    <tr>
+        <th>Cert Expiry</th><td>@User.CertExpiry</td>
+    </tr>
+</table>
+<button @onclick=Logout>Log out</button>
+

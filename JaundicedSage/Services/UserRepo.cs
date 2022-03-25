@@ -1,5 +1,7 @@
 ﻿namespace JaundicedSage.Services;
+
 using System.Collections.Concurrent;
+
 public class UserRepo
 {
     private readonly ConcurrentDictionary<Guid, User> users = new();

@@ -1,0 +1,22 @@
+﻿@page "/"
+@using Bowser.Data
+@inject UserRepo repo
+@inject NavigationManager nav
+
+<PageTitle>Reaches those areas Bowsette can't</PageTitle>
+
+<EditForm Model=@this OnSubmit=@Logon>
+    <h1>Select user to log in as</h1>
+    <div>
+        <button type="submit">Logon</button>
+
+        <InputSelect @bind-Value=SelectedId>
+            @foreach(var user in Users)
+            {
+                <option value=@user.Id>@user.Label</option> 
+            }
+        </InputSelect>
+    </div>
+</EditForm>
+
+
