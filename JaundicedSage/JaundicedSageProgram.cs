@@ -58,6 +58,8 @@ WebApplication BuildApp()
     builder.Services.AddGrpcClient<ReaderClient>("Resin", o => {
         o.Address = new Uri(builder.Configuration["ConnectionStrings:Resin"]);
     });
+
+    builder.Services.AddHostedService<UserRepoWorker>();
     builder.Services.AddSingleton<UserRepo>();
 
     return builder.Build();

@@ -24,9 +24,9 @@ So much pain...
 - Some funny interactions between opt_csharp_namespace and package. Namespace name inference from package is pretty good so just use that (as it allows you to make use of packages as namepsaces within the protobug files)
 - Putting contracts in nuget package makes them easy to share, fairly easy to only get the bits you need out the package
 - don't put them in the nuget package until they've stabilised, it's a pain the arse while you're iterating.
-- Namespace collisions are easy when you have lots of contracts, make liberal use of packages
+- Namespace collisions are easy when you have lots of contracts, make liberal use of packages (less of an issue if you don't bung all your contracts in one nuget package)
 - clean rebuilds often, the protobuf compiler gets wedged frequently
-- Everythign is a value type. You need to think how to deal with the absence of a response - null is not an option try Maybe
+- Everything (apart frommessages) is a value type. You need to think how to deal with the absence of a response - null is not an option. You can mimic null with oneof (it's a tagged union and the first tag is always None)
 - grpc can only convert from datetimes if they are utc
 
 ** Docker
@@ -41,6 +41,7 @@ So much pain...
 - host names all change when running in compose, connections to localhost now go to a service whose name is defined in the compose file
 - don't change the service names in docker compose while the service is running as compose will no longer recognise it
 - docker compose up doesn't auto rebuild
+- you need a separate docker compose file for each set of things you want to manage independently (e.g. if you want logging to stay up when system comes down it needs its own file)
 
 ** Elastic
 - turn datastream off for the logstash destination or stuff doesn't get added to the right index

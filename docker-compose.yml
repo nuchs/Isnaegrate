@@ -1,7 +1,24 @@
 version: "3.9"
 services:
 
+  jaundiced-sage:
+    build:
+      context: ./JaundicedSage
+      network: host
+    depends_on:
+      - logstash
+      - ing-mum
+    ports:
+      - "5079:80"
+    logging:
+      driver: "syslog"
+      options:
+        syslog-address: "tcp://:5000"
+    networks:
+      - isnaegrate
+
   mum:
+    container_name: "ing-mum"
     build:
       context: ./Mum
       network: host
