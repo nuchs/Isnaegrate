@@ -44,6 +44,7 @@ So much pain...
 - you need a separate docker compose file for each set of things you want to manage independently (e.g. if you want logging to stay up when system comes down it needs its own file)
 - stopping a service with compose doesn't stop its dependencies
 - start up order is hard, dependencies can't be depended on
+- stop build start does not seem to pick up the new image with compose, need to down build up
 
 ** Elastic
 - turn datastream off for the logstash destination or stuff doesn't get added to the right index

@@ -8,7 +8,8 @@ namespace JaundicedSage.Services;
 
 public sealed class UserRepoWorker : BackgroundService
 {
-    private const string EventStream = "Account";
+    private const string AccountStream = "Account";
+    private const string SessionStream = "Session";
     private readonly ILogger<UserRepoWorker> log;
     private readonly ReaderClient reader;
     private readonly UserRepo repo;
@@ -24,7 +25,10 @@ public sealed class UserRepoWorker : BackgroundService
     {
         try
         {
-            await Subscription(stoppingToken);
+            var accountSubscription = Subscribe(AccountStream, ProcessAccountEvent, stoppingToken);
+            var sessionSubscription = Subscribe(SessionStream, ProcessSessionEvent, stoppingToken);
+
+            await Task.WhenAll(accountSubscription, sessionSubscription);
         }
         catch (OperationCanceledException)
         {
@@ -40,36 +44,53 @@ public sealed class UserRepoWorker : BackgroundService
         }
     }
 
-    private async Task Subscription(CancellationToken stoppingToken)
+    private async Task Subscribe(string stream, Action<IsgEvent> handler, CancellationToken stoppingToken)
     {
-        log.LogInformation("Subscribing to {} stream", EventStream);
+        log.LogInformation("Subscribing to {} stream", stream);
 
-        var reply = reader.Subscribe(new ReadRequest { Stream = EventStream, Position = 0 }, cancellationToken: stoppingToken);
+        var reply = reader.Subscribe(new ReadRequest { Stream = stream, Position = 0 }, cancellationToken: stoppingToken);
 
         await foreach (var isgEvent in reply.ResponseStream.ReadAllAsync(stoppingToken))
         {
-            ProcessEvent(isgEvent);
+            handler(isgEvent);
         }
     }
 
-    private void ProcessEvent(IsgEvent rawEvent)
+    private void ProcessAccountEvent(IsgEvent raw)
     {
-        switch (rawEvent.GetEventType<AccountEventTypes>())
+        switch (raw.GetEventType<AccountEventTypes>())
         {
             case AccountEventTypes.Added:
             case AccountEventTypes.Updated:
-                var accountData = rawEvent.DeserialiseEvent<Account>();
+                var accountData = raw.DeserialiseEvent<Account>();
                 if(accountData is not null)
-                    repo.AddOrUpdateAccount(accountData, rawEvent.Type);
+                    repo.AddOrUpdateUser(accountData, raw.Type);
                 break;
 
             case AccountEventTypes.Deleted:
-                var accountId = rawEvent.DeserialiseEvent<Guid>();
+                var accountId = raw.DeserialiseEvent<Guid>();
                 repo.RemoveAccount(accountId);
                 break;
 
             default:
-                log.LogWarning("Unable to process event - Unknown event type: {}", rawEvent.Type);
+                log.LogWarning("Unable to process event - Unknown event type: {}", raw.Type);
+                break;
+        }
+    }
+
+    private void ProcessSessionEvent(IsgEvent raw)
+    {
+        switch (raw.GetEventType<SessionEventTypes>())
+        {
+            case SessionEventTypes.SessionStart:
+            case SessionEventTypes.SessionEnd:
+                var session = raw.DeserialiseEvent<Session>();
+                session.When = raw.When.ToDateTime();
+                repo.AddOrUpdateUser(session);
+                break;
+
+            default:
+                log.LogWarning("Unable to process event - Unknown event type: {}", raw.Type);
                 break;
         }
     }

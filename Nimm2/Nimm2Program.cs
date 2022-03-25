@@ -18,9 +18,6 @@ try
 
     await test.Run();
 
-    Console.WriteLine("Press any key to exit...");
-    Console.ReadKey();
-
     return 0;
 }
 catch (ArgumentException ex)

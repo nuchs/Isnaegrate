@@ -37,9 +37,14 @@ public sealed class User
         return this;
     }
 
-    public User MergeLogonData(DateTime logonTime)
+    public User MergeLogonData(Session session)
     {
-        LastOnline = logonTime.ToUniversalTime();
+        if (session.Id != Id)
+        {
+            throw new InvalidOperationException($"Id mismatch cannot merge data for session {session.Id} into user with id {Id}");
+        }
+
+        LastOnline = session.When.ToUniversalTime();
 
         return this;
     }
