@@ -182,6 +182,20 @@ services:
     depends_on:
       - elasticsearch
 
+  filebeat:
+    build:
+      context: ./elk/filebeat
+      args:
+        ELASTIC_VERSION: 8.1.0
+    volumes:
+      - ./elk/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/data/docker-desktop/default/daemon-data/containers:/var/lib/docker/containers:ro 
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - isnaegrate
+    depends_on:
+      - elasticsearch
+
 networks:
   isnaegrate:
     driver: bridge
