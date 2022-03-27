@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mewtils" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Certs\ca_intermediate.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

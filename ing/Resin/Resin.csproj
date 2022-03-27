@@ -13,6 +13,7 @@
   <ItemGroup>
     <PackageReference Include="EventStore.Client.Grpc.Streams" Version="22.0.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.44.0" />
+    <PackageReference Include="Mewtils" Version="1.0.1" />
     <PackageReference Include="Resin.Grpc" Version="1.0.2" />
   </ItemGroup>
 
