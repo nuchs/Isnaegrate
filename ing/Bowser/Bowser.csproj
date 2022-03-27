@@ -19,8 +19,4 @@
     <PackageReference Include="Epoxy.Grpc" Version="1.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Protobuf Include="Protos\*.proto" GrpcServices="Client" AdditionalImportDirs="$(PkgEpoxy_Grpc)\Content\Protos" />
-    <Protobuf Include="Protos\*.proto" GrpcServices="Client" AdditionalImportDirs="$(PkgJaundicedSage_Grpc)\Content\Protos" />
-  </ItemGroup>
 </Project>

@@ -19,8 +19,4 @@
     <PackageReference Include="Resin.Grpc" Version="1.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Protobuf Include="Protos\*.proto" GrpcServices="Client" AdditionalImportDirs="$(PkgResin_Grpc)\Content\Protos"  />
-    <Protobuf Include="Protos\*.proto" GrpcServices="Server" AdditionalImportDirs="$(PkgJaundicedSage_Grpc)\Content\Protos" />
-  </ItemGroup>
 </Project>

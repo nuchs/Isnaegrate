@@ -16,8 +16,4 @@
     <PackageReference Include="Grpc.AspNetCore" Version="2.43.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Protobuf Include="*.proto" GrpcServices="Server" AdditionalImportDirs="$(PkgEpoxy_Grpc)\Content\Protos"/>
-  </ItemGroup>
-
 </Project>
