@@ -7,6 +7,12 @@ So much pain...
 - can only share files from the linux system to docker  (not tchically true but it isa major arse to get stuff from the windows system on to it)
 - Visual studio can work on projetcs in it but oyu will get weirdness
 
+** ASP
+- ASP functionaltiy is not provided as nuget packages but instead as 'sdks'. These are specificed in your csproj file
+- Choosing an SDK has all sorts of side effects apart from the nuget packages it determines thigns like global usings, project output type and whether or not you can package the project
+- These values seem to be overridable but it takes a bi tof looking to know what switch to flip
+
+
 ** Event Store
 - its EventStore.Client.Grpc.Streams not EventStore.Client.Grpc you need from nuget
 - Uid's need to be set by the publisher rather than be generated further down the chain (e.g. in the proxy or event store itself). This allows for idempotent publishing
