@@ -1,0 +1,102 @@
+version: "3.9"
+services:
+
+  bowser:
+    build:
+      context: ./Bowser
+      network: host
+    depends_on:
+      - jaundiced-sage
+      - epoxy
+    ports:
+      - "7127:80"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+        tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
+
+  jaundiced-sage:
+    build:
+      context: ./JaundicedSage
+      network: host
+    depends_on:
+      - resin
+    ports:
+      - "5079:80"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+        tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
+
+  mum:
+    build:
+      context: ./Mum
+      network: host
+    depends_on:
+      - resin
+      - epoxy
+    ports:
+      - "5266:80"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+        tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
+
+  resin:
+    build:
+      context: ./Resin
+      network: host
+    depends_on:
+      - eventstore
+    ports:
+      - "5158:80"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+        tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
+
+  epoxy:
+    build:
+      context: ./Epoxy
+      network: host
+    depends_on:
+      - eventstore
+    ports:
+      - "5296:80"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+        tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
+        
+  eventstore:
+    image: eventstore/eventstore:latest
+    environment:
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+      - EVENTSTORE_EXT_TCP_PORT=1113
+      - EVENTSTORE_HTTP_PORT=2113
+      - EVENTSTORE_INSECURE=true
+      - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+    ports:
+      - "1113:1113"
+      - "2113:2113"
+    volumes:
+      - "./esdb/data:/var/lib/eventstore"
+      - "./esdb/logs:/var/log/eventstore"
+        
+networks:
+  default:
+    name: isnaegrate
+    external: true

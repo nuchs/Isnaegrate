@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Authors>Nuchs</Authors>
+    <Description>Eventstore Read Proxy</Description>
+    <Company>Smilies</Company>
+    <Version>1.0.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EventStore.Client.Grpc.Streams" Version="22.0.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.43.0" />
+    <PackageReference Include="Resin.Grpc" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="*.proto" GrpcServices="Server" AdditionalImportDirs="$(PkgResin_Grpc)\Content\Protos"/>
+  </ItemGroup>
+  
+</Project>
