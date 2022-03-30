@@ -11,7 +11,7 @@ try
     {
         "sub" => new SubscribeTest(),
         "read" => new ReadTest(),
-        "write" => new WriteTest(),
+        "write" => new WriteTest(args),
         "users" => new UsersTest(args),
         _ => throw new ArgumentException($"Unrecognised command {args[0]} - must be one of 'read', 'sub', 'users' or 'write'")
     };

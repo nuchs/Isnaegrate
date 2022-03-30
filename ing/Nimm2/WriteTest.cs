@@ -8,7 +8,21 @@ namespace Nimm2;
 internal class WriteTest : ITest
 {
     private const string EventType = "TestType";
-    private const string EventStream = "TestStream";
+    private readonly string EventStream = "TestStream";
+    private readonly int NumEvents = 3;
+
+    public WriteTest(string[] args)
+    {
+        if (args.Length > 1)
+        {
+            EventStream = args[1];
+        }
+
+        if (args.Length > 2)
+        {
+            NumEvents = int.Parse(args[2]);
+        }
+    }
 
     public async Task Run()
     {
@@ -16,12 +30,16 @@ internal class WriteTest : ITest
 
         var client = new WriterClient(channel);
         var rand = new Random();
+        List<Proposition> props = new();
+
+        for (int i = 0; i < NumEvents; i++)
+        {
+            props.Add(NewProposition(Guid.NewGuid(), EventType, "Nimm2", new DTO { Name = "Arthur", Guessed = i }));
+        }
 
         var propSet = NewPropositionSet(
             EventStream,
-            NewProposition(Guid.NewGuid(), EventType, "Nimm2", new DTO { Name = "Alice", Guessed = rand.Next()}),
-            NewProposition(Guid.NewGuid(), EventType, "Nimm2", new DTO { Name = "Bob", Guessed = rand.Next()}),
-            NewProposition(Guid.NewGuid(), EventType, "Nimm2", new DTO { Name = "Charles", Guessed = rand.Next()})
+            props.ToArray()
         );
 
         Console.WriteLine($"Writing to {propSet.Stream}");
