@@ -1,4 +1,3 @@
-using EventStore.Client;
 using Grpc.Core;
 using Resin.Grpc;
 using static Resin.Grpc.Reader;
@@ -7,83 +6,34 @@ namespace Resin.Services;
 
 public class ReaderService : ReaderBase
 {
-    private readonly ILogger<ReaderService> log;
-    private readonly EventStoreClient esdb;
+    private readonly ConnectionManager connectionMgr;
 
-    public ReaderService(EventStoreClient esdb, ILogger<ReaderService> log)
+    public ReaderService(ConnectionManager connectionMgr)
     {
-        this.log = log;
-        this.esdb = esdb;
+        this.connectionMgr = connectionMgr;
     }
 
-    public override async Task Read(ReadRequest request, IServerStreamWriter<IsgEvent> stream, ServerCallContext context)
+    public override async Task Read(ReadRequest request, IServerStreamWriter<IsgEvent> responseStream, ServerCallContext context)
     {
-        try
-        {
-            log.LogInformation("Hello {}, you'd like to read {} from {}", context.AuthContext.PeerIdentity.FirstOrDefault()?.Name ?? "No-one", request.Stream, request.Position);
-            var results = esdb.ReadStreamAsync(Direction.Forwards, request.Stream.ToString(), request.Position);
+        var id = WhoAmI(context);
 
-            await foreach (var result in results)
-            {
-                await stream.WriteAsync(Helpers.NewIsgEvent(
-                                   result.Event.EventId.ToString(),
-                                   result.Event.EventType,
-                                   result.Event.Metadata,
-                                   result.Event.Position.CommitPosition,
-                                   result.Event.Created,
-                                   result.Event.Data
-                               ));
-            }
-            log.LogInformation("You're all up to date");
-        }
-        catch (Exception e)
+        await foreach (var result in connectionMgr.Read(id, request.Stream, request.Position))
         {
-            log.LogError(e, "Failed to read from {} at position {}", request.Stream, request.Position);
-            throw;
+            await responseStream.WriteAsync(result);
         }
     }
 
     public override async Task Subscribe(ReadRequest request, IServerStreamWriter<IsgEvent> responseStream, ServerCallContext context)
     {
-        var done = CancellationTokenSource.CreateLinkedTokenSource(context.CancellationToken);
-        var subId = "not set yet";
+        var id = WhoAmI(context);
 
-        try
+        await using var subscription = connectionMgr.Subscribe(id, request.Stream, request.Position);
+        await foreach (var result in subscription)
         {
-            log.LogInformation("Subscribing to {} from position {}", request.Stream, request.Position);
-            using var sub = await esdb.SubscribeToStreamAsync(
-                request.Stream.ToString(),
-                FromStream.After(new StreamPosition(request.Position)), 
-                eventAppeared: (sub, ev, cancel) =>
-                {
-                    log.LogInformation("Received new events for {}", sub.SubscriptionId);
-
-                    return responseStream.WriteAsync(Helpers.NewIsgEvent(
-                        ev.Event.EventId.ToString(),
-                        ev.Event.EventType,
-                        ev.Event.Metadata,
-                        ev.Event.Position.CommitPosition,
-                        ev.Event.Created,
-                        ev.Event.Data));
-                },
-                subscriptionDropped: (sub, reason, exp) =>
-                {
-                    log.LogWarning(exp, "Dropping subscription {} because {}", sub.SubscriptionId, reason);
-                    done.Cancel();
-                },
-                cancellationToken: done.Token)
-                .ConfigureAwait(false);
-
-            subId = sub.SubscriptionId; 
-            await Task.Delay(-1, done.Token).ConfigureAwait(false);
-        }
-        catch (TaskCanceledException)
-        {
-            log.LogWarning("Subscription {} cancelled", subId);
-        }
-        finally
-        {
-            done.Cancel();
+            await responseStream.WriteAsync(result);
         }
     }
+
+    private string WhoAmI(ServerCallContext context)
+            => context.AuthContext.PeerIdentity.FirstOrDefault()?.Name ?? "No-one";
 }
