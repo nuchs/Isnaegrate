@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting.WindowsServices;
+using Microsoft.Extensions.Logging.Console;
 using System.Reflection;
 
 namespace Mewtils;
@@ -53,7 +54,7 @@ public class StartUp
         return loggerFactory.CreateLogger<StartUp>();
     }
 
-    private static Action<Microsoft.Extensions.Logging.Console.JsonConsoleFormatterOptions> ConfigureJsonLogger()
+    private static Action<JsonConsoleFormatterOptions> ConfigureJsonLogger()
     {
         return conf =>
         {

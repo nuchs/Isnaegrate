@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 
 namespace Resin.Services;
 
-public class ConnectionManager : IDisposable
+public sealed class ConnectionManager : IDisposable
 {
     private readonly EventStoreClient esdb;
     private readonly ILogger<ConnectionManager> log;
@@ -15,7 +15,7 @@ public class ConnectionManager : IDisposable
     private readonly CancellationTokenSource serviceToken = new();
     private readonly ConcurrentDictionary<string, Subscription> subscriptions = new();
 
-    internal ConnectionManager(EventStoreClient esdb, ILoggerFactory loggerFactory)
+    public ConnectionManager(EventStoreClient esdb, ILoggerFactory loggerFactory)
     {
         this.esdb = esdb;
 

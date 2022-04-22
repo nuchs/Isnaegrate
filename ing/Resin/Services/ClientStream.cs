@@ -58,12 +58,6 @@ internal sealed class ClientStream : IAsyncEnumerable<IsgEvent>, IAsyncDisposabl
     private string GetReason(CancellationToken clientToken)
         => clientToken.IsCancellationRequested ? "by client" : "by subscription";
 
-    public void Stop()
-    {
-        log.LogInformation("Stop requested for client {0}", clientId);
-        Swallow(streamTokenSource.Cancel, log);
-    }
-
     private async Task CatchUp()
     {
         try
